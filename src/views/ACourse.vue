@@ -3,7 +3,7 @@
     <h1>{{ courseDetails.coursename }} - {{ courseDetails.coursecode }} - {{ courseDetails.courseects }} ECTS</h1>
     <div class="course-stat">
       <label>MAX NUMBER OF STUDENTS:</label>
-      <input type="number" v-model.number="courseDetails.studentsnumbers" />
+      <input class="students-number-input" type="number" v-model.number="courseDetails.studentsnumbers" />
     </div>
     <div class="course-stat" :class="{ 'error': studentsPerGroupExceeded }">
       <label>NUMBER OF GROUPS:</label>
@@ -13,7 +13,7 @@
       <label>COURSE DESCRIPTION:</label>
       <textarea v-model="courseDetails.description"></textarea>
     </div>
-    <button @click="updateCourse" :disabled="studentsPerGroupExceeded">Update Course</button>
+    <button id="update-button" @click="updateCourse" :disabled="studentsPerGroupExceeded">Update Course</button>
   </div>
 </template>
 

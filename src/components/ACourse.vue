@@ -5,7 +5,7 @@
         <p>{{ course.coursename }}</p>
       </div>
       <router-link :to="{ name: 'ACourse', params: { id: course.id }}">
-        <div class="course-detail">
+        <div class="course-code">
           <h4>Code:</h4>
           <p>{{ course.coursecode }}</p>
         </div>
