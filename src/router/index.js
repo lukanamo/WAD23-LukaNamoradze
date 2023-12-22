@@ -12,7 +12,6 @@ const routes = [{
   name: 'ACourse',
   component: ACourse,
 },
-, 
 {
   path: "/:catchAll(.*)",
   name: "Courses",
