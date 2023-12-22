@@ -3,17 +3,17 @@
     <h1>{{ courseDetails.coursename }} - {{ courseDetails.coursecode }} - {{ courseDetails.courseects }} ECTS</h1>
     <div class="course-stat">
       <label>MAX NUMBER OF STUDENTS:</label>
-      <input type="number" v-model="courseDetails.studentsnumbers" />
+      <input type="number" v-model.number="courseDetails.studentsnumbers" />
     </div>
-    <div class="course-stat">
+    <div class="course-stat" :class="{ 'error': studentsPerGroupExceeded }">
       <label>NUMBER OF GROUPS:</label>
-      <input type="number" v-model="courseDetails.groupsnumbers" />
+      <input class="num-of-groups" type="number" v-model.number="courseDetails.groupsnumbers" />
     </div>
     <div class="course-stat">
       <label>COURSE DESCRIPTION:</label>
       <textarea v-model="courseDetails.description"></textarea>
     </div>
-    <button @click="updateCourse">Update Course</button>
+    <button @click="updateCourse" :disabled="studentsPerGroupExceeded">Update Course</button>
   </div>
 </template>
 
@@ -24,6 +24,11 @@ export default {
     return {
       courseDetails: null,
     };
+  },
+  computed: {
+    studentsPerGroupExceeded() {
+      return this.courseDetails && (this.courseDetails.studentsnumbers / this.courseDetails.groupsnumbers) > 30;
+    }
   },
   methods: {
     fetchCourseData() {
@@ -107,5 +112,14 @@ button {
 }
 button:hover {
   background-color: #4cae4c;
+}
+.error {
+  .num-of-groups {
+    background-color: #cb1423;
+  }
+}
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
 </style>
