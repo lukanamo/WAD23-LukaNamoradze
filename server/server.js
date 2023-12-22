@@ -40,4 +40,28 @@ app.get('/api/courses/:id', async (req, res) => {
       console.error(err.message);
       res.status(500).json({ message: 'Server error' });
     }
-  });  
+  }); 
+
+app.put('/api/courses/:id', async (req, res) => {
+    const { id } = req.params;
+    const { studentsnumbers, groupsnumbers, description } = req.body;
+    
+    try {
+      const updateQuery = `
+        UPDATE courses 
+        SET studentsnumbers = $1, groupsnumbers = $2, description = $3 
+        WHERE id = $4
+      `;
+      const values = [studentsnumbers, groupsnumbers, description, id];
+      const updateResult = await pool.query(updateQuery, values);
+  
+      if (updateResult.rowCount > 0) {
+        res.json({ message: 'Course updated successfully' });
+      } else {
+        res.status(404).json({ message: 'Course not found' });
+      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json({ message: 'Server error' });
+    }
+});

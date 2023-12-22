@@ -3,16 +3,17 @@
     <h1>{{ courseDetails.coursename }} - {{ courseDetails.coursecode }} - {{ courseDetails.courseects }} ECTS</h1>
     <div class="course-stat">
       <label>MAX NUMBER OF STUDENTS:</label>
-      <input readonly :value="courseDetails.studentsnumbers" />
+      <input type="number" v-model="courseDetails.studentsnumbers" />
     </div>
     <div class="course-stat">
       <label>NUMBER OF GROUPS:</label>
-      <input readonly :value="courseDetails.groupsnumbers" />
+      <input type="number" v-model="courseDetails.groupsnumbers" />
     </div>
     <div class="course-stat">
       <label>COURSE DESCRIPTION:</label>
-      <textarea readonly>{{ courseDetails.description }}</textarea>
+      <textarea v-model="courseDetails.description"></textarea>
     </div>
+    <button @click="updateCourse">Update Course</button>
   </div>
 </template>
 
@@ -33,6 +34,26 @@ export default {
           this.courseDetails = data;
         })
         .catch(error => console.error('Error:', error));
+    },
+    updateCourse() {
+      const courseId = this.$route.params.id;
+      fetch(`http://localhost:3000/api/courses/${courseId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(this.courseDetails),
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(() => {
+        this.$router.push('/Courses');
+      })
+      .catch(error => console.error('Error:', error));
     }
   },
   mounted() {
@@ -73,5 +94,18 @@ textarea {
 
 textarea {
   resize: none;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #5cb85c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #4cae4c;
 }
 </style>
